@@ -3,7 +3,7 @@ import { redis } from "../lib/redis.js";
 
 export const TopUSAmovies = async(c: any)=>{
      try {
-  const cachedData = await redis.get<string>("USAmovies");
+  const cachedData = await redis.get<string>("USAMovies");
   
       if (cachedData !== undefined && cachedData !== null) {
         console.log("redis is return")
@@ -15,7 +15,7 @@ export const TopUSAmovies = async(c: any)=>{
         'x-rapidapi-host': process.env.RAPIDAPI_HOST as string,
       }
     })
-     await redis.set("cachedkey", fetch.data, {
+     await redis.set("USAMovies", fetch.data, {
           ex: 3600
         })
         console.log("Serving from API");

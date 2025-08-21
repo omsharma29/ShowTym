@@ -9,9 +9,11 @@ import { CastInfo } from './routerFunction/CastInfo.js'
 import { rateLimiter } from './lib/ratelimit.js'
 // while deploying in cloudflare 
 // write all credential in wranger.toml and use c.env.url but for node local use process.env.url
+import { cors } from "hono/cors"
+
 
 const app = new Hono()
-
+app.use('*', cors())
 app.use('*', rateLimiter)
 
 app.get('/', (c) => c.text('🎬 Showtyme Backend is Live!'))
@@ -19,6 +21,8 @@ app.get('/', (c) => c.text('🎬 Showtyme Backend is Live!'))
 app.get('/api/usmovies', TopUSAmovies)
 app.get('/api/indianmovies', TopIndianMovies)
 app.get('/api/upcoming', upcomingIndianMovies)
+
+
 app.get('/api/search', AutoComplete)
 app.get('/api/cast', CastInfo)
 

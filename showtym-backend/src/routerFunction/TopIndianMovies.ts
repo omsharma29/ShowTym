@@ -4,7 +4,7 @@ import { redis } from "../lib/redis.js";
 export const TopIndianMovies = async(c: any)=>{
      try {
 
-      const cachedData = await redis.get<string>("USAmovies");
+      const cachedData = await redis.get<string>("IndianMovies");
         
             if (cachedData !== undefined && cachedData !== null) {
               console.log("redis is return")
@@ -18,7 +18,7 @@ export const TopIndianMovies = async(c: any)=>{
       }
     })
 
-     await redis.set("cachedkey", fetch.data, {
+     await redis.set("IndianMovies", fetch.data, {
           ex: 3600
         })
         console.log("Serving from API");
