@@ -3,6 +3,23 @@ import { data } from "react-router-dom";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+interface Movie {
+  id: string;
+  originalTitle: string;
+  description: string;
+  primaryImage: string;
+  genres: string[];
+  spokenLanguages: string[];
+}
+
+type MovieStore = {
+  movies: Movie[];
+  addMovies: (newMovies: Movie[]) => void;
+  // getMovieById: (id: string) => Movie | undefined;
+};
+
+
+
 
 type UpcomingMovie = {
   data: any[];
@@ -51,9 +68,17 @@ export const useUsaMovie = create<UsaMovies>()(persist((set) => ({
   { name: "usa-movies", }
 ))
 
-export const useCast = create<Cast>()(persist((set) => ({
+export const useCast = create<Cast>()((set) => ({
   data: [],
   setCast: (newData) => set({ data: newData })
 }),
-  { name: "moviecast" }
+)
+
+export const MovieStore = create<MovieStore>()(persist( (set) => ({
+      movies: [],
+      addMovies: (newData) => set((state) => ({
+        movies : [...state.movies, ...newData.filter((m) => !state.movies.some((existing)=> existing.id === m.id))]
+      })),
+    }),
+{name : "all-movies"}
 ))

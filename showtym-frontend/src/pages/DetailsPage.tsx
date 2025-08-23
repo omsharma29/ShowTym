@@ -1,4 +1,4 @@
-import { useCast, useUpcomingMovie } from "@/store/Store";
+import { MovieStore, useCast, useUpcomingMovie } from "@/store/Store";
 import { useParams } from "react-router-dom";
 import {
   Dialog,
@@ -21,10 +21,14 @@ import { Castfetch } from "@/functions/CastFetch";
 type LangCode = "hi" | "te" | "en" | "bn" | "pa";
 export default function DetailsPage() {
   const { id } = useParams(); // ✅ must match ":movieid" in the route
-  const data = useUpcomingMovie((state) => state.data);
+  const data = MovieStore((state) => state.movies);
   const filterData = data.find((movie) => movie.id === id);
   if (!filterData) return <p>Loading...</p>;
 
+
+
+
+  
   {/*For language*/ }
   const langMap: Record<LangCode, string> = {
     hi: "Hindi",
@@ -37,13 +41,10 @@ export default function DetailsPage() {
   function getLanguage(code: LangCode): string {
     return langMap[code];
   }
-
   {/*For Genre*/ }
   const filtergenre = filterData.genres.map((genre: any) => {
     return " " + genre
   })
-
-
 
   {/*For year and month and date*/ }
   const currentYear = new Date().getFullYear();
@@ -89,7 +90,7 @@ export default function DetailsPage() {
           </h1>
 
           <p className="text-sm md:text-base">
-            <span className="font-bold">Lang:</span> {getLanguage(filterData.spokenLanguages[0])}
+            <span className="font-bold">Lang:</span> 
           </p>
           <p className="text-sm md:text-base">
             <span className="font-bold">Genre:</span> {filtergenre}

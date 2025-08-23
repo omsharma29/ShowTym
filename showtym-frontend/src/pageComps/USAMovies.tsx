@@ -1,20 +1,25 @@
-import { useUsaMovie } from "@/store/Store"
+import { MovieStore, useUsaMovie } from "@/store/Store"
 import { useEffect } from "react"
 import axios from 'axios'
+import { useNavigate } from "react-router-dom"
 
 export default function USAMovies() {
     const data = useUsaMovie((state) => state.data)
     const setUsaMovie = useUsaMovie((state) => state.setUsaMovie)
+    const setAllMovies = MovieStore((state) => state.addMovies)
+    const navigate = useNavigate()
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if(data.length === 0){
-                      const fetch = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/usmovies`)
-                console.log(fetch.data)
-                setUsaMovie(fetch.data)
+                if (data.length === 0) {
+                    const fetch = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/usmovies`)
+                    console.log(fetch.data)
+                    setUsaMovie(fetch.data)
+                    setAllMovies(fetch.data)
                 }
-              
+
             } catch (error) {
                 console.log(error)
             }
@@ -27,7 +32,9 @@ export default function USAMovies() {
             <div className="flex gap-4 w-full mx-auto overflow-x-auto no-scrollbar pb-4">
                 {data.map((movie, id) => (
                     movie.primaryImage &&
-                    <img src={movie.primaryImage} key={id} className="lg:w-[300px] hover:scale-103 md:w-[200px] w-[100px] rounded-2xl" />
+                    <img src={movie.primaryImage} key={id} className="lg:w-[300px] hover:scale-103 md:w-[200px] w-[100px] rounded-2xl" onClick={() => {
+                        window.location.href = `/${movie.id}/details`;
+                    }} />
                 ))}
             </div>
         </div>

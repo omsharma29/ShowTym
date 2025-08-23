@@ -1,22 +1,24 @@
-import { useIndianMovie } from "@/store/Store"
+import { MovieStore, useIndianMovie } from "@/store/Store"
 import { useEffect } from "react"
 import axios from 'axios'
 import { useNavigate } from "react-router-dom"
 
 export default function IndianMovirs() {
-   const data = useIndianMovie((state) => state.data)
+    const data = useIndianMovie((state) => state.data)
     const setIndianMovie = useIndianMovie((state) => state.setIndianMovie)
+    const setAllMovies = MovieStore((state) => state.addMovies)
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if(data.length === 0){
+                if (data.length === 0) {
                     const fetch = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/indianmovies`)
-                
-                setIndianMovie(fetch.data)
+
+                    setIndianMovie(fetch.data)
+                    setAllMovies(fetch.data)
                 }
-                
+
             } catch (error) {
                 console.log(error)
             }
@@ -29,7 +31,9 @@ export default function IndianMovirs() {
             <div className="flex gap-4 w-full mx-auto overflow-x-auto no-scrollbar pb-4">
                 {data.map((movie, id) => (
                     movie.primaryImage &&
-                    <img src={movie.primaryImage} key={id} className="lg:w-[300px] md:w-[200px] w-[100px] rounded-2xl" onClick={() => navigate(`/${movie.id}/details`)}/>
+                    <img src={movie.primaryImage} key={id} className="lg:w-[300px] md:w-[200px] w-[100px] rounded-2xl" onClick={() => {
+                        window.location.href = `/${movie.id}/details`;
+                    }} />
                 ))}
             </div>
         </div>
