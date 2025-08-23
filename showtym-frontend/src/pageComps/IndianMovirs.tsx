@@ -1,13 +1,11 @@
 import { MovieStore, useIndianMovie } from "@/store/Store"
 import { useEffect } from "react"
 import axios from 'axios'
-import { useNavigate } from "react-router-dom"
 
 export default function IndianMovirs() {
     const data = useIndianMovie((state) => state.data)
     const setIndianMovie = useIndianMovie((state) => state.setIndianMovie)
     const setAllMovies = MovieStore((state) => state.addMovies)
-    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {

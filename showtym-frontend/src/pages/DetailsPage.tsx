@@ -1,4 +1,4 @@
-import { MovieStore, useCast, useUpcomingMovie } from "@/store/Store";
+import { MovieStore, useCast } from "@/store/Store";
 import { useParams } from "react-router-dom";
 import {
   Dialog,
@@ -18,7 +18,21 @@ import { Button } from "@/components/ui/button"
 import { useEffect } from "react";
 import { Castfetch } from "@/functions/CastFetch";
 
-type LangCode = "hi" | "te" | "en" | "bn" | "pa";
+// 🔹 Put this at the top (outside your component)
+export const langMap = {
+  hi: "Hindi",
+  te: "Telugu",
+  en: "English",
+  bn: "Bengali",
+  pa: "Punjabi",
+} as const;
+
+export type LangCode = keyof typeof langMap;
+
+export function getLanguage(code: LangCode): string {
+  return langMap[code];
+}
+
 export default function DetailsPage() {
   const { id } = useParams(); // ✅ must match ":movieid" in the route
   const data = MovieStore((state) => state.movies);
@@ -28,19 +42,9 @@ export default function DetailsPage() {
 
 
 
-  
-  {/*For language*/ }
-  const langMap: Record<LangCode, string> = {
-    hi: "Hindi",
-    te: "Telugu",
-    en: "English",
-    bn: "Bengali",
-    pa: "Punjabi"
 
-  };
-  function getLanguage(code: LangCode): string {
-    return langMap[code];
-  }
+  {/*For language*/ }
+
   {/*For Genre*/ }
   const filtergenre = filterData.genres.map((genre: any) => {
     return " " + genre
@@ -90,7 +94,7 @@ export default function DetailsPage() {
           </h1>
 
           <p className="text-sm md:text-base">
-            <span className="font-bold">Lang:</span> 
+            <span className="font-bold">Lang:</span>  {getLanguage(filterData.spokenLanguages[0] as LangCode)}
           </p>
           <p className="text-sm md:text-base">
             <span className="font-bold">Genre:</span> {filtergenre}

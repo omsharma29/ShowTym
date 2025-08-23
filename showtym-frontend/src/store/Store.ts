@@ -1,5 +1,4 @@
 // store.ts
-import { data } from "react-router-dom";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

@@ -1,7 +1,6 @@
 import { MovieStore, useUpcomingMovie } from "@/store/Store"
 import { useEffect } from "react"
 import axios from 'axios'
-import { useNavigate } from "react-router-dom";
 
 
 
@@ -10,7 +9,6 @@ export default function UpcomingMovie() {
     const data = useUpcomingMovie((state) => state.data)
     const setUpcomingMovie = useUpcomingMovie((state) => state.setUpcomingMovie)
     const setAllMovies = MovieStore((state) => state.addMovies)
-    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {

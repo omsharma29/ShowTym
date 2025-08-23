@@ -1,13 +1,11 @@
 import { MovieStore, useUsaMovie } from "@/store/Store"
 import { useEffect } from "react"
 import axios from 'axios'
-import { useNavigate } from "react-router-dom"
 
 export default function USAMovies() {
     const data = useUsaMovie((state) => state.data)
     const setUsaMovie = useUsaMovie((state) => state.setUsaMovie)
     const setAllMovies = MovieStore((state) => state.addMovies)
-    const navigate = useNavigate()
 
 
     useEffect(() => {
