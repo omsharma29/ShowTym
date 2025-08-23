@@ -9,15 +9,18 @@ export default function USAMovies() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const fetch = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/usmovies`)
+                if(data.length === 0){
+                      const fetch = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/usmovies`)
                 console.log(fetch.data)
                 setUsaMovie(fetch.data)
+                }
+              
             } catch (error) {
                 console.log(error)
             }
         }
         fetchData();
-    }, [setUsaMovie])
+    }, [data, setUsaMovie])
     return (
         <div className="max-w-full mx-auto w-[90%]">
             <h1 className="lg:text-2xl md:text-xl  text-[1rem] font-medium mb-4">Best of Hollywood</h1>

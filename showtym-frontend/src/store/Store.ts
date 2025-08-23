@@ -1,5 +1,7 @@
 // store.ts
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
 
 type UpcomingMovie = {
   data: any[];
@@ -16,17 +18,28 @@ type UsaMovies = {
   setUsaMovie: (newData: any[]) => void;
 };
 
-export const useUpcomingMovie = create<UpcomingMovie>((set) => ({
+export const useUpcomingMovie = create<UpcomingMovie>()(
+  persist(
+    (set) => ({
+      data: [],
+      setUpcomingMovie: (newData) => set({ data: newData }),
+    }),
+    {
+      name: "upcoming-movies", // ✅ key in localStorage
+    }
+  )
+);
+
+export const useIndianMovie = create<IndianMovie>()(persist((set) => ({
   data: [],
-  setUpcomingMovie: (newData) => set({ data: newData }),
-}));
+  setIndianMovie: (newData) => set({ data: newData })
+}),
+  { name: "Indian-Movies", }
+))
 
-export const useIndianMovie = create<IndianMovie>((set)=>({
-    data : [],
-    setIndianMovie: (newData)=> set({data : newData})
-}))
-
-export const useUsaMovie = create<UsaMovies>((set)=>({
-    data : [],
-    setUsaMovie: (newData)=> set({data : newData})
-}))
+export const useUsaMovie = create<UsaMovies>()(persist((set) => ({
+  data: [],
+  setUsaMovie: (newData) => set({ data: newData })
+}),
+  { name: "usa-movies", }
+))
