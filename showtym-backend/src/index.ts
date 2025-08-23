@@ -24,7 +24,7 @@ app.get('/api/upcoming', upcomingIndianMovies)
 
 
 app.get('/api/search', AutoComplete)
-app.get('/api/cast', CastInfo)
+app.get('/movie/:id/cast', CastInfo)
 
 
 serve({

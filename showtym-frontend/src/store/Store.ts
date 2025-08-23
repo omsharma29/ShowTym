@@ -1,4 +1,5 @@
 // store.ts
+import { data } from "react-router-dom";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -7,6 +8,12 @@ type UpcomingMovie = {
   data: any[];
   setUpcomingMovie: (newData: any[]) => void;
 };
+
+type Cast = {
+  data: any[];
+  setCast: (newData: any[]) => void;
+};
+
 
 type IndianMovie = {
   data: any[];
@@ -42,4 +49,11 @@ export const useUsaMovie = create<UsaMovies>()(persist((set) => ({
   setUsaMovie: (newData) => set({ data: newData })
 }),
   { name: "usa-movies", }
+))
+
+export const useCast = create<Cast>()(persist((set) => ({
+  data: [],
+  setCast: (newData) => set({ data: newData })
+}),
+  { name: "moviecast" }
 ))

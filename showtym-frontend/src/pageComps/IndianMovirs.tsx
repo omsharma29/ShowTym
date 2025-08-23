@@ -1,10 +1,12 @@
 import { useIndianMovie } from "@/store/Store"
 import { useEffect } from "react"
 import axios from 'axios'
+import { useNavigate } from "react-router-dom"
 
 export default function IndianMovirs() {
    const data = useIndianMovie((state) => state.data)
     const setIndianMovie = useIndianMovie((state) => state.setIndianMovie)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,7 +29,7 @@ export default function IndianMovirs() {
             <div className="flex gap-4 w-full mx-auto overflow-x-auto no-scrollbar pb-4">
                 {data.map((movie, id) => (
                     movie.primaryImage &&
-                    <img src={movie.primaryImage} key={id} className="lg:w-[300px] md:w-[200px] w-[100px] rounded-2xl" />
+                    <img src={movie.primaryImage} key={id} className="lg:w-[300px] md:w-[200px] w-[100px] rounded-2xl" onClick={() => navigate(`/${movie.id}/details`)}/>
                 ))}
             </div>
         </div>
