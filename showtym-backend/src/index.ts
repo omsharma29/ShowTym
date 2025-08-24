@@ -10,6 +10,7 @@ import { rateLimiter } from './lib/ratelimit.js'
 // while deploying in cloudflare 
 // write all credential in wranger.toml and use c.env.url but for node local use process.env.url
 import { cors } from "hono/cors"
+import { getCityHall } from './routerFunction/SeatsAndHall.js'
 
 
 const app = new Hono()
@@ -26,6 +27,7 @@ app.get('/api/upcoming', upcomingIndianMovies)
 app.get('/api/search', AutoComplete)
 app.get('/movie/:id/cast', CastInfo)
 
+app.get('/api/movie/:cityName', getCityHall)
 
 serve({
   fetch: app.fetch,

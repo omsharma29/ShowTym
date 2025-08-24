@@ -151,46 +151,45 @@ export default function DetailsPage() {
             </DialogContent>
           </Dialog>
 
-        </div>
-      </div>
-
-
-      <hr className="border-t-2 border-gray-300 " />
-
-
-      <div className="h-[20%]  p-2 flex flex-col gap-3">
-        <div className="text-xl font-bold">{currentMonthName} {currentYear}</div>
-        <div className="currunt flex flex-row gap-4">
-          {days.map((day, i) => (
-            <div
-              key={i}
-              className="w-8 h-8 flex items-center justify-center rounded-lg bg-white shadow cursor-pointer hover:bg-blue-300 hover:text-white transition hover:scale-105"
-            >
-              {day}
+          <div className="h-[20%]  p-2 flex flex-col gap-3">
+            <div className="text-xl font-bold">{currentMonthName} {currentYear}</div>
+            <div className="currunt flex flex-row gap-4">
+              {days.map((day, i) => (
+                <div
+                  key={i}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-white shadow cursor-pointer hover:bg-blue-300 hover:text-white transition hover:scale-105"
+                >
+                  {day}
+                </div>
+              ))}
             </div>
-          ))}
+
+            <div className="flex gap-4">
+              <div className="filter flex flex-row gap-2">
+                <p>Filter: </p>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="border-2 p-1 text-[0.75rem]">Select Place</DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>Delhi</DropdownMenuItem>
+                    <DropdownMenuItem>Kolkata</DropdownMenuItem>
+                    <DropdownMenuItem>Mumbai</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="persons flex flex-row gap-4 items-center">
+                <p>Person:</p>
+                <Button className="w-2 h-6 bg-blue-300 rounded-[100%] p-4">-</Button>
+                <div className="count">0</div>
+                <Button className="w-2 h-6 bg-blue-300 rounded-[100%] p-4">+</Button>
+              </div>
+            </div>
+          </div>
+
+
         </div>
 
-        <div className="flex gap-4">
-          <div className="filter flex flex-row gap-2">
-            <p>Filter: </p>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="border-2 p-1 text-[0.75rem]">Select Place</DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>Delhi</DropdownMenuItem>
-                <DropdownMenuItem>Kolkata</DropdownMenuItem>
-                <DropdownMenuItem>Mumbai</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <div className="persons flex flex-row gap-4 items-center">
-            <p>Person:</p>
-            <Button className="w-2 h-6 bg-blue-300 rounded-[100%] p-4">-</Button>
-            <div className="count">0</div>
-            <Button className="w-2 h-6 bg-blue-300 rounded-[100%] p-4">+</Button>
-          </div>
-        </div>
       </div>
+
 
       <hr className="border-t-2 border-gray-300 " />
 

@@ -29,6 +29,13 @@ text : popins
   display: none;            /* Chrome, Safari, Opera */
 }
 
+.no-select {
+  user-select: none; /* Prevents text/image selection */
+  -webkit-user-drag: none; /* Prevents dragging images in Chrome/Safari */
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
 @theme inline {
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
