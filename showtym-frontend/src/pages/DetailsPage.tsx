@@ -1,4 +1,4 @@
-import { MovieStore, useCast } from "@/store/Store";
+import { MovieStore, useCast, useCityStore } from "@/store/Store";
 import { useParams } from "react-router-dom";
 import {
   Dialog,
@@ -17,9 +17,11 @@ import {
 import { Button } from "@/components/ui/button"
 import { useEffect } from "react";
 import { Castfetch } from "@/functions/CastFetch";
+import { fetchCityData } from "@/functions/CityFetch";
+import CityBox from "@/pageComps/CityBox";
 
 // 🔹 Put this at the top (outside your component)
-export const langMap = {
+ const langMap = {
   hi: "Hindi",
   te: "Telugu",
   en: "English",
@@ -29,7 +31,11 @@ export const langMap = {
 
 export type LangCode = keyof typeof langMap;
 
-export function getLanguage(code: LangCode): string {
+
+
+
+
+function getLanguage(code: LangCode): string {
   return langMap[code];
 }
 
@@ -38,6 +44,14 @@ export default function DetailsPage() {
   const data = MovieStore((state) => state.movies);
   const filterData = data.find((movie) => movie.id === id);
   if (!filterData) return <p>Loading...</p>;
+
+   const { selectedCity, setSelectedCity, setCityData } = useCityStore();
+
+  const handleSelect = async (city: string) => {
+    setSelectedCity(city); // update trigger text
+    const data = await fetchCityData(city);
+    setCityData(data); // store city data in zustand
+  };
 
 
 
@@ -168,20 +182,15 @@ export default function DetailsPage() {
               <div className="filter flex flex-row gap-2">
                 <p>Filter: </p>
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="border-2 p-1 text-[0.75rem]">Select Place</DropdownMenuTrigger>
+                  <DropdownMenuTrigger className="border-2 p-1 text-[0.75rem]">{selectedCity}</DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem>Delhi</DropdownMenuItem>
-                    <DropdownMenuItem>Kolkata</DropdownMenuItem>
-                    <DropdownMenuItem>Mumbai</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleSelect("Delhi")}>Delhi</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleSelect("Kolkata")}>Kolkata</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleSelect("Mumbai")}>Mumbai</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div className="persons flex flex-row gap-4 items-center">
-                <p>Person:</p>
-                <Button className="w-2 h-6 bg-blue-300 rounded-[100%] p-4">-</Button>
-                <div className="count">0</div>
-                <Button className="w-2 h-6 bg-blue-300 rounded-[100%] p-4">+</Button>
-              </div>
+              
             </div>
           </div>
 
@@ -195,7 +204,7 @@ export default function DetailsPage() {
 
 
       <div className="h-[40%] flex justify-center items-center">
-        Select The Place
+        <CityBox/>
       </div>
     </div>
 

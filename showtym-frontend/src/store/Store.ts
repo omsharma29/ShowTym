@@ -19,6 +19,16 @@ type MovieStore = {
 
 
 
+type CityStore = {
+  selectedCity: string;
+  cityData: any;
+  setSelectedCity: (city: string) => void;
+  setCityData: (data: any) => void;
+
+};
+
+
+
 
 type UpcomingMovie = {
   data: any[];
@@ -81,3 +91,10 @@ export const MovieStore = create<MovieStore>()(persist( (set) => ({
     }),
 {name : "all-movies"}
 ))
+
+export const useCityStore = create<CityStore>((set) => ({
+  selectedCity: "Select Place",
+  cityData: null,
+  setSelectedCity: (city) => set({ selectedCity: city }),
+  setCityData: (data) => set({ cityData: data }),
+}));
