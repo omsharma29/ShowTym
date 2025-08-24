@@ -170,7 +170,7 @@ export default function DetailsPage() {
             </DialogContent>
           </Dialog>
 
-       
+
           {/* Date and day */}
           {/* Date + Time merged box with filter aside */}
           <div className="h-[20%] p-2 flex flex-col gap-3">
@@ -208,12 +208,16 @@ export default function DetailsPage() {
                     <div
                       key={id}
                       onClick={() => {
+                        if (selectedCity === "Select Place") {
+                          alert("⚠️ Please select a city first!");
+                          return;
+                        }
                         setDate(day);
                         setTime(null); // reset time when new date selected
                       }}
                       className={`min-w-[90px] h-16 flex flex-col items-center justify-center rounded-lg shadow cursor-pointer text-sm font-medium transition hover:scale-105 ${isSelected
-                          ? "bg-[#98b7d0] text-white"
-                          : "bg-white hover:bg-blue-300 hover:text-white"
+                        ? "bg-[#98b7d0] text-white"
+                        : "bg-white hover:bg-blue-300 hover:text-white"
                         }`}
                     >
                       <span className="text-base font-semibold">
@@ -236,8 +240,8 @@ export default function DetailsPage() {
                       key={tIdx}
                       onClick={() => setTime(time)}
                       className={`px-3 py-1 rounded-lg cursor-pointer transition ${TimeData === time
-                          ? "bg-[#98b7d0] text-white"
-                          : "bg-gray-200 hover:bg-gray-300"
+                        ? "bg-[#98b7d0] text-white"
+                        : "bg-gray-200 hover:bg-gray-300"
                         }`}
                     >
                       {time}
@@ -263,8 +267,14 @@ export default function DetailsPage() {
         <CityBox />
       </div>
 
-      <div className="flex justify-center py-10">
-        <Button className="px-10 py-5 text-xl bg-[#98b7d0] hover:bg-[#041c45]" onClick={()=>navigate(`/${id}/seatBook`)} >Book Now, Hurry Up!</Button>
+      <div className="flex justify-center py-10" >
+        <Button className="px-10 py-5 text-xl bg-[#98b7d0] hover:bg-[#041c45]" onClick={() => {
+          if (!selectedCity || !DateData || !TimeData) {
+            alert("⚠️ Please select city, date, and time before booking!");
+            return;
+          }
+          navigate(`/${id}/seatBook`)
+        }} >Book Now, Hurry Up!</Button>
       </div>
     </div>
 

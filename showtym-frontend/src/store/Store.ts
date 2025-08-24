@@ -1,6 +1,6 @@
 // store.ts
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface Movie {
   id: string;
@@ -100,11 +100,17 @@ export const useCityStore = create<CityStore>((set) => ({
   setCityData: (data) => set({ cityData: data }),
 }));
 
-export const useDate = create<DateAndTime>()((set)=>({
-   DateData : null,
-  setDate : (data)=>set({DateData : data}),
-   TimeData: null,
-   setTime: (data) => set({ TimeData: data }),
-}
- )
-)
+export const useDate = create<DateAndTime>()(
+  persist(
+    (set) => ({
+      DateData: null,
+      setDate: (data) => set({ DateData: data }),
+      TimeData: null,
+      setTime: (data) => set({ TimeData: data }),
+    }),
+    {
+      name: "date-storage", // key
+      storage: createJSONStorage(() => sessionStorage), // 👈 sessionStorage use hoga
+    }
+  )
+);
