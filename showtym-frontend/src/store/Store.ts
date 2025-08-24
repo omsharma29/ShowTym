@@ -1,4 +1,5 @@
 // store.ts
+import { Search } from "lucide-react";
 import { create } from "zustand";
 import {  persist } from "zustand/middleware";
 
@@ -15,6 +16,24 @@ type MovieStore = {
   addMovies: (newMovies: Movie[]) => void;
   // getMovieById: (id: string) => Movie | undefined;
 };
+
+
+
+interface MovieSearch {
+  id: string;
+  originalTitle: string;
+  primaryImage: string;
+  description : string
+}
+
+interface SearchState {
+  search: string;
+  setSearch: (value: string) => void;
+  results: MovieSearch[];
+  setResults: (movies: MovieSearch[]) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => void;
+}
 
 
 
@@ -114,3 +133,13 @@ export const useDate = create<DateAndTime>()(
     }
   )
 );
+
+export const useSearch = create<SearchState>()((set)=>({
+  search : "",
+  setSearch : (data) => set({search : data}),
+  results: [],
+  setResults: (movies) => set({ results: movies }),
+  loading: false,
+  setLoading: (value) => set({ loading: value }),
+
+}))
