@@ -10,7 +10,6 @@ interface Movie {
   genres: string[];
   spokenLanguages: string[];
 }
-
 type MovieStore = {
   movies: Movie[];
   addMovies: (newMovies: Movie[]) => void;
@@ -27,25 +26,27 @@ type CityStore = {
 
 };
 
+type DateAndTime = {
+  DateData : Date | null;
+    TimeData: string | null;
+  setTime: (data: any) => void;
 
+  setDate : (data : any) => void;
+}
 
-
-type UpcomingMovie = {
-  data: any[];
-  setUpcomingMovie: (newData: any[]) => void;
-};
 
 type Cast = {
   data: any[];
   setCast: (newData: any[]) => void;
 };
-
-
+type UpcomingMovie = {
+  data: any[];
+  setUpcomingMovie: (newData: any[]) => void;
+};
 type IndianMovie = {
   data: any[];
   setIndianMovie: (newData: any[]) => void;
 };
-
 type UsaMovies = {
   data: any[];
   setUsaMovie: (newData: any[]) => void;
@@ -98,3 +99,12 @@ export const useCityStore = create<CityStore>((set) => ({
   setSelectedCity: (city) => set({ selectedCity: city }),
   setCityData: (data) => set({ cityData: data }),
 }));
+
+export const useDate = create<DateAndTime>()((set)=>({
+   DateData : null,
+  setDate : (data)=>set({DateData : data}),
+   TimeData: null,
+   setTime: (data) => set({ TimeData: data }),
+}
+ )
+)

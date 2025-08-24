@@ -11,7 +11,6 @@ export default function CityBox() {
     );
   }
 
-  // 🔹 Success State
   return (
     <div className="w-[600px] bg-white shadow-xl rounded-2xl p-6 border border-gray-200">
       <h2 className="text-xl font-bold">{cityData.name} 🎬</h2>
@@ -31,7 +30,7 @@ export default function CityBox() {
       ) : (
         <p className="mt-2 text-sm text-gray-400">No special features listed.</p>
       )}
-     <p>Price : {cityData.moviHall.pricePerSeat} </p>
+     <p className="mt-2 text-sm font-semibold">Price : {cityData.movieHall.pricePerSeat} </p>
     </div>
   );
 }
