@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import Logo from "../assets/Logo.png";
 import {Search} from "lucide-react"
+import SignupComp from "./SignupComp";
 
 function Navbar() {
   return (
@@ -18,7 +19,9 @@ function Navbar() {
       </div>
 
       {/* Avatar */}
-      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full justify-self-center self-center  bg-black flex-shrink-0 order-2 md:order-3"></div>
+      <div className=" rounded-full justify-self-center self-center  flex-shrink-0 order-2 md:order-3">
+        <SignupComp/>
+      </div>
 
     </div>
   );

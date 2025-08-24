@@ -269,7 +269,7 @@ export default function DetailsPage() {
 
       <div className="flex justify-center py-10" >
         <Button className="px-10 py-5 text-xl bg-[#98b7d0] hover:bg-[#041c45]" onClick={() => {
-          if (!selectedCity || !DateData || !TimeData) {
+          if (!selectedCity) {
             alert("⚠️ Please select city, date, and time before booking!");
             return;
           }
