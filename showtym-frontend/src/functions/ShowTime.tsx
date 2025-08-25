@@ -14,6 +14,5 @@ export const showTimes: Record<number, string[]> = {
 export const days = Array.from({ length: 7 }, (_, i) => {
   const d = new Date(); // today
   d.setDate(d.getDate() + i); // ✅ safe add days
-  console.log(d.toDateString)
   return d;
 });

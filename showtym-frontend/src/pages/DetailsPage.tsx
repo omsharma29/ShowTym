@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Castfetch } from "@/functions/CastFetch";
 import { fetchCityData } from "@/functions/CityFetch";
 import CityBox from "@/pageComps/CityBox";
@@ -46,7 +46,7 @@ export default function DetailsPage() {
 
   const { selectedCity, setSelectedCity, setCityData } = useCityStore();
   const { DateData, setDate, TimeData, setTime } = useDate()
-  const calendarRef = useRef<HTMLDivElement>(null);
+
 
   const handleSelect = async (city: string) => {
     setSelectedCity(city); // update trigger text
@@ -80,18 +80,7 @@ export default function DetailsPage() {
   }, [id, setCast]);
 
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target as Node)
-      ) {
-        setDate(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [setDate, setTime]);
+
 
 
   return (
@@ -198,14 +187,15 @@ export default function DetailsPage() {
 
             {/* Date + Time grid */}
             <div
-              ref={calendarRef}
+           
               className="flex flex-col gap-6 w-full bg-gray-50 rounded-xl p-4 shadow-md"
             >
               {/* Dates */}
               <div className="flex flex-wrap gap-4 justify-start items-center">
                 {days.map((day, id) => {
+                  
                   const isSelected = DateData?.toDateString() === day.toDateString();
-                  console.log(isSelected)
+
                   return (
                     <div
                       key={id}
@@ -214,18 +204,16 @@ export default function DetailsPage() {
                           alert("⚠️ Please select a city first!");
                           return;
                         }
-                        setDate(new Date(day));
-                        setTime(null); // reset time when new date selected
-                        console.log("Stored Date:", DateData?.toDateString());
-                        console.log("This Button:", day.toDateString());
+                        setDate(day); // ✅ store string
+                        setTime(null);
+
+                        console.log("Stored Date (string):", day);
                       }}
                       className={`min-w-[90px] h-16 flex flex-col items-center justify-center rounded-lg shadow cursor-pointer text-sm font-medium transition hover:scale-105 ${isSelected
-                        ? "bg-[#98b7d0] text-white"
-                        : "bg-white hover:bg-blue-300 hover:text-white"
+                          ? "bg-[#98b7d0] text-white"
+                          : "bg-white hover:bg-blue-300 hover:text-white"
                         }`}
                     >
-
-
                       <span className="text-base font-semibold">
                         {day.toLocaleDateString("en-US", { day: "numeric" })}
                       </span>
@@ -275,7 +263,7 @@ export default function DetailsPage() {
 
       <div className="flex justify-center py-10" >
         <Button className="px-10 py-5 text-xl bg-[#98b7d0] hover:bg-[#041c45]" onClick={() => {
-          if (selectedCity === "Select Place" && DateData === null && TimeData === null) {
+          if (selectedCity === "Select Place" || !DateData || !TimeData) {
             alert("⚠️ Please select city, date, and time before booking!");
             return;
           } else { navigate(`/${id}/seatBook`) }

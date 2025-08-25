@@ -121,12 +121,14 @@ export const useCityStore = create<CityStore>((set) => ({
 
 export const useDate = create<DateAndTime>()(
   
+   
     (set) => ({
-      DateData: null,
-      setDate: (data: Date) => set({ DateData: data }),
+      DateData: null as Date | null,
       TimeData: null,
+      setDate: (data) => set({ DateData: data }),
       setTime: (data) => set({ TimeData: data }),
     }),
+ 
 
 );
 

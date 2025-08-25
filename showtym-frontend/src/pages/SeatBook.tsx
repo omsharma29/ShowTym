@@ -1,8 +1,9 @@
 import MovieSeat from "@/pageComps/MovieSeat";
 import { MovieStore, useCityStore, useDate } from "@/store/Store";
 import { Card, CardContent } from "@/components/ui/card";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 export default function SeatBook() {
   const { cityData } = useCityStore();
@@ -10,6 +11,14 @@ export default function SeatBook() {
   const { id } = useParams();
   const data = MovieStore((state) => state.movies);
   const filterData = data.find((movie) => movie.id === id);
+    const navigate = useNavigate(); // 👈 add this
+
+
+  useEffect(() => {
+    if (!cityData || !DateData || !TimeData) {
+      navigate(-1); // 👈 go back
+    }
+  }, [cityData, DateData, TimeData, navigate]);
 
   return (
     <div className="max-w-full mx-auto flex justify-center p-5 items-center flex-col gap-6">
@@ -24,8 +33,19 @@ export default function SeatBook() {
             <p className="venue text-sm">
               Venue:{" "}
               <span>{cityData?.movieHall?.name ?? "Unknown Venue"}</span>,{" "}
-              {cityData?.movieHall?.address ?? "No Address"}, on {DateData?.toDateString()} at {TimeData}
+              {cityData?.movieHall?.address ?? "No Address"}, on{" "}
+              <strong>
+                {DateData
+                  ? new Date(DateData).toLocaleDateString("en-US", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short"
+                  })
+                  : "No Date"}
+              </strong>{" "}
+              at <strong>{TimeData ?? "No Time"}</strong>
             </p>
+
           </CardContent>
         </Card>
       </div>
