@@ -11,11 +11,9 @@ export const showTimes: Record<number, string[]> = {
 };
 
 
-const today = new Date().getDate();
-
 export const days = Array.from({ length: 7 }, (_, i) => {
-  const d = new Date();
-  d.setDate(today + i); // next 7 days
-  return d// readable format
+  const d = new Date(); // today
+  d.setDate(d.getDate() + i); // ✅ safe add days
+  console.log(d.toDateString)
+  return d;
 });
-

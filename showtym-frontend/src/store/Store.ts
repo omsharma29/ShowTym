@@ -1,6 +1,6 @@
 // store.ts
 import { create } from "zustand";
-import {  persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 interface Movie {
   id: string;
@@ -16,13 +16,18 @@ type MovieStore = {
   // getMovieById: (id: string) => Movie | undefined;
 };
 
+interface SeatState {
+  selectedSeats: string[];
+  toggleSeat: (seat: string) => void;
+  clearSeats: () => void;
+}
 
 
 interface MovieSearch {
   id: string;
   originalTitle: string;
   primaryImage: string;
-  description : string
+  description: string
 }
 
 interface SearchState {
@@ -34,8 +39,6 @@ interface SearchState {
   setLoading: (value: boolean) => void;
 }
 
-
-
 type CityStore = {
   selectedCity: string;
   cityData: any;
@@ -45,14 +48,12 @@ type CityStore = {
 };
 
 type DateAndTime = {
-  DateData : Date | null;
-    TimeData: string | null;
+  DateData: Date | null;
+  TimeData: string | null;
   setTime: (data: any) => void;
 
-  setDate : (data : any) => void;
+  setDate: (data: any) => void;
 }
-
-
 type Cast = {
   data: any[];
   setCast: (newData: any[]) => void;
@@ -102,13 +103,13 @@ export const useCast = create<Cast>()((set) => ({
 }),
 )
 
-export const MovieStore = create<MovieStore>()(persist( (set) => ({
-      movies: [],
-      addMovies: (newData) => set((state) => ({
-        movies : [...state.movies, ...newData.filter((m) => !state.movies.some((existing)=> existing.id === m.id))]
-      })),
-    }),
-{name : "all-movies"}
+export const MovieStore = create<MovieStore>()(persist((set) => ({
+  movies: [],
+  addMovies: (newData) => set((state) => ({
+    movies: [...state.movies, ...newData.filter((m) => !state.movies.some((existing) => existing.id === m.id))]
+  })),
+}),
+  { name: "all-movies" }
 ))
 
 export const useCityStore = create<CityStore>((set) => ({
@@ -119,26 +120,44 @@ export const useCityStore = create<CityStore>((set) => ({
 }));
 
 export const useDate = create<DateAndTime>()(
-  persist(
+  
     (set) => ({
-      DateData:  null as Date | null,
-      setDate: (data : Date) => set({ DateData: data }),
+      DateData: null,
+      setDate: (data: Date) => set({ DateData: data }),
       TimeData: null,
       setTime: (data) => set({ TimeData: data }),
     }),
-     {
-      name: "date-store",
-      
-    }
-  )
+
 );
 
-export const useSearch = create<SearchState>()((set)=>({
-  search : "",
-  setSearch : (data) => set({search : data}),
+export const useSearch = create<SearchState>()((set) => ({
+  search: "",
+  setSearch: (data) => set({ search: data }),
   results: [],
   setResults: (movies) => set({ results: movies }),
   loading: false,
   setLoading: (value) => set({ loading: value }),
 
 }))
+
+export const useSeatStore = create<SeatState>()(
+  
+    (set, get) => ({
+      selectedSeats: [],
+      toggleSeat: (seat) => {
+        const { selectedSeats } = get();
+        if (selectedSeats.includes(seat)) {
+          // deselect seat
+          set({ selectedSeats: selectedSeats.filter((s) => s !== seat) });
+        } else {
+          // select seat
+          set({ selectedSeats: [...selectedSeats, seat] });
+        }
+      },
+      clearSeats: () => set({ selectedSeats: [] }),
+    }),
+  
+
+  
+);
+
