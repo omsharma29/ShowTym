@@ -1,5 +1,5 @@
 import MovieSeat from "@/pageComps/MovieSeat";
-import { MovieStore, useCityStore, useDate } from "@/store/Store";
+import { MovieStore, useCityStore, useDate, useSeatStore } from "@/store/Store";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,11 @@ export default function SeatBook() {
   const { id } = useParams();
   const data = MovieStore((state) => state.movies);
   const filterData = data.find((movie) => movie.id === id);
-    const navigate = useNavigate(); // 👈 add this
+  const navigate = useNavigate(); // 👈 add this
+  const {selectedSeats} = useSeatStore()
+  const totalSeat = selectedSeats.length
+  const totalPrice = cityData?.movieHall?.pricePerSeat * totalSeat
+
 
 
   useEffect(() => {
@@ -57,7 +61,7 @@ export default function SeatBook() {
 
       {/* Sticky Pay Now Button */}
       <div className="ButtonBuyNow fixed bottom-0 w-full rounded-t-lg border-t h-[60px] bg-white shadow-2xl flex justify-center items-center">
-        <Button>Pay Now</Button>
+        <Button>Pay Now :- &#8377; {  totalPrice }</Button>
       </div>
     </div>
   );
