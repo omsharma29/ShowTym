@@ -17,18 +17,21 @@ datasource db {
 }
 
 model Booking {
-id                String @id @default(uuid())
-clerkId           String
-email             String
-movieName         String
-City              String
-Address           String
-ShowDate          DateTime
-ShowTime          String
-totalPaid         Float
-bookingDate       DateTime @default(now())
+  id           String   @id @default(uuid())
+  clerkId      String
+  email        String
+  movieName    String
+  movieId      String   // ✅ new field
+  City         String
+  Address      String
+  ShowDate     DateTime
+  ShowTime     String
+  totalSeat    Int
+  totalPaid    Float
+  bookingDate  DateTime @default(now())
 
-@@index([clerkId])
-@@index([email])
+  seatNos      String[]   // ✅ array of seat numbers (Postgres only)
 
+  @@index([clerkId])
+  @@index([email])
 }
