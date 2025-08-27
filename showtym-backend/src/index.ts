@@ -11,6 +11,7 @@ import { rateLimiter } from './lib/ratelimit.js'
 // write all credential in wranger.toml and use c.env.url but for node local use process.env.url
 import { cors } from "hono/cors"
 import { getCityHall } from './routerFunction/SeatsAndHall.js'
+import { MovieBooked } from './routerFunction/MovieBooked.js'
 
 
 
@@ -29,6 +30,8 @@ app.get('/api/search', AutoComplete)
 app.get('/movie/:id/cast', CastInfo)
 
 app.get('/api/movie/:cityName', getCityHall)
+
+app.post('/api/booking', MovieBooked)
 
 serve({
   fetch: app.fetch,

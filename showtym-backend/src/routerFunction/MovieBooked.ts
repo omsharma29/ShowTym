@@ -10,7 +10,7 @@ export const MovieBooked = async (c:any) => {
                 email : body.email,
                 movieName : body.movieName,
                 movieId : body.movieId,
-                City : body.city,
+                City : body.City,
                 Address : body.Address,
                 ShowDate : body.ShowDate,
                 ShowTime : body.ShowTime,

@@ -4,19 +4,60 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { useUser } from "@clerk/clerk-react"; // or @clerk/nextjs
+import axios from "axios";
+
 
 export default function SeatBook() {
-  const { cityData } = useCityStore();
+  const { cityData, selectedCity } = useCityStore();
   const { DateData, TimeData } = useDate();
   const { id } = useParams();
   const data = MovieStore((state) => state.movies);
   const filterData = data.find((movie) => movie.id === id);
   const navigate = useNavigate(); // 👈 add this
-  const {selectedSeats} = useSeatStore()
+  const { selectedSeats } = useSeatStore()
   const totalSeat = selectedSeats.length
   const totalPrice = cityData?.movieHall?.pricePerSeat * totalSeat
+  const { user } = useUser();
 
+  console.log("Selected city:", selectedCity);
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (totalSeat === 0) {
+      alert("Please select at least one seat to proceed with payment.")
+    }
+    if (cityData === null || DateData === null || TimeData === null) {
+      alert("Some data is missing like city, dates, time, please go back and select again.")
+    }
+    const bookingDetails = {
+      clerkId: user?.id,
+      email: user?.primaryEmailAddress?.emailAddress,
+      movieName: filterData?.originalTitle,
+      movieId: filterData?.id,    
+      City: selectedCity,
+      Address: cityData.movieHall.address,
+      ShowDate: DateData,
+      ShowTime: TimeData,
+      totalSeat: totalSeat,
+      totalPaid: totalPrice,
+      seatNos: selectedSeats
+    }
+    
 
+    try {
+      const putData = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/booking`, bookingDetails)
+
+      if (putData.status === 201) {
+        alert("Booking successful! Check your email for details.")
+        console.log("Booking successful");
+        console.log(putData.data);
+      }
+    } catch (error) {
+      console.error("error in booking:", error);
+      alert("error in booking, please try again")
+    }
+
+  }
 
   useEffect(() => {
     if (!cityData || !DateData || !TimeData) {
@@ -61,7 +102,7 @@ export default function SeatBook() {
 
       {/* Sticky Pay Now Button */}
       <div className="ButtonBuyNow fixed bottom-0 w-full rounded-t-lg border-t h-[60px] bg-white shadow-2xl flex justify-center items-center">
-        <Button>Pay Now :- &#8377; {  totalPrice }</Button>
+        <Button onClick={handleClick}>Pay Now :- &#8377; {totalPrice}</Button>
       </div>
     </div>
   );
