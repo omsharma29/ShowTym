@@ -14,8 +14,8 @@ const cashfree = new Cashfree(
 export const verify = async (c: any) => {
     try {
         const body = await c.req.json();
-        const orderId = body.oderId; // just extract the string
-
+        const orderId = body.orderId; // just extract the string
+        console.log("Order ID to verify:", orderId);
         // Destructure them
 
 
@@ -35,8 +35,8 @@ export const verify = async (c: any) => {
         } = response.data;
 
         if (order_status === 'PAID') {
-            await prisma.booking.updateMany({
-                where: { oderId: orderId },
+            await prisma.booking.updateManyAndReturn({
+                where: { orderId: orderId },
                 data: { PaymentDone: true }
             })
         } else {
@@ -44,10 +44,10 @@ export const verify = async (c: any) => {
         }
 
 
-        const booking = await prisma.booking.findMany({
-            where: { oderId: orderId }, // 👈 ensure your Booking model has "orderId" field
+        const booking = await prisma.booking.findFirst({
+            where: { orderId: orderId }, // 👈 ensure your Booking model has "orderId" field
             select: {
-                oderId: true,
+                orderId: true,
                 email: true,
                 movieName: true,
                 totalPaid: true,

@@ -80,7 +80,7 @@ export default function SeatBook() {
           totalSeat: totalSeat,
           totalPaid: totalPrice,
           seatNos: selectedSeats,
-          oderId: SessionResponse.order_id,
+          orderId: SessionResponse.order_id,
         }
 
         await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/booking`, bookingDetails)

@@ -30,11 +30,11 @@ model Booking {
   totalPaid    Float
   bookingDate  DateTime @default(now())
   seatNos      String[]   // ✅ array of seat numbers (Postgres only)
-  oderId       String
+  orderId       String
   PaymentDone  Boolean
 
 
   @@index([clerkId])
-   @@index([oderId])
+   @@index([orderId])
   @@index([email])
 }

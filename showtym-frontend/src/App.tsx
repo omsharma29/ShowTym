@@ -20,7 +20,7 @@ function App() {
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
-      <Route path="/payment-status/:id" element={<PaymentStatus />} />
+      <Route path="/payment-status/:myOrderId" element={<PaymentStatus />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   )
