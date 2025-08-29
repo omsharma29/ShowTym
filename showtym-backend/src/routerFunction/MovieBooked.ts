@@ -17,6 +17,8 @@ export const MovieBooked = async (c:any) => {
                 totalSeat : body.totalSeat,
                 totalPaid : body.totalPaid,
                 seatNos : body.seatNos,
+                oderId : body.oderId,
+                PaymentDone : false
                 
             }
         })

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@cashfreepayments/cashfree-js':
+        specifier: ^1.0.5
+        version: 1.0.5
       '@clerk/clerk-react':
         specifier: ^5.43.1
         version: 5.43.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -191,6 +194,9 @@ packages:
   '@babel/types@7.28.2':
     resolution: {integrity: sha512-ruv7Ae4J5dUYULmeXw1gmb7rYRz57OWCPM57pHojnLq/3Z1CK2lNSLTCVjxVk1F/TZHwOZZrOWi0ur95BbLxNQ==}
     engines: {node: '>=6.9.0'}
+
+  '@cashfreepayments/cashfree-js@1.0.5':
+    resolution: {integrity: sha512-fP9wi9mseXJmESGIkD9vb6RAKdSZw42jXiQY2LUt5A2STyEqMv0mYLgK2zqpMNSbdK9QdN1c4YnEv9mmyxC8mg==}
 
   '@clerk/clerk-react@5.43.1':
     resolution: {integrity: sha512-JXZo212wXQN+KcAYMEWMoFEZ5br6LABE1eY+xg3PlUX8TK88UY6B6WKqPJE5uKpIqom7dUbwhER03oc1Hh8+1w==}
@@ -2076,6 +2082,8 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
+
+  '@cashfreepayments/cashfree-js@1.0.5': {}
 
   '@clerk/clerk-react@5.43.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:

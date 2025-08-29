@@ -7,6 +7,7 @@ import SignUp from "./pages/SignUp"
 import Booked from "./pages/Booked"
 import PageNotFound from "./pages/PageNotFound"
 import ProtectedRoute from "./functions/RouteProtection"
+import PaymentStatus from "./pages/PaymentStatus"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+      <Route path="/payment-status/:id" element={<PaymentStatus />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   )

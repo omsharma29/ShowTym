@@ -12,6 +12,9 @@ import { rateLimiter } from './lib/ratelimit.js'
 import { cors } from "hono/cors"
 import { getCityHall } from './routerFunction/SeatsAndHall.js'
 import { MovieBooked } from './routerFunction/MovieBooked.js'
+import {Cashfree} from 'cashfree-pg'
+import { payment } from './routerFunction/Payment.js'
+import { verify } from './routerFunction/Verify.js'
 
 
 
@@ -32,6 +35,9 @@ app.get('/movie/:id/cast', CastInfo)
 app.get('/api/movie/:cityName', getCityHall)
 
 app.post('/api/booking', MovieBooked)
+
+app.post('/api/payment', payment)
+app.post('/api/webhook/verify', verify )
 
 serve({
   fetch: app.fetch,

@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { useUser } from "@clerk/clerk-react"; // or @clerk/nextjs
 import axios from "axios";
+import { sessionId } from "@/functions/CashFreeSessionID";
+// @ts-ignore
+import { load } from "@cashfreepayments/cashfree-js";
+
 
 
 export default function SeatBook() {
@@ -20,43 +24,89 @@ export default function SeatBook() {
   const totalPrice = cityData?.movieHall?.pricePerSeat * totalSeat
   const { user } = useUser();
 
+
+
+
+
+
   console.log("Selected city:", selectedCity);
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+
     e.preventDefault();
     if (totalSeat === 0) {
       alert("Please select at least one seat to proceed with payment.")
     }
-    if (cityData === null || DateData === null || TimeData === null) {
+    else if (cityData === null || DateData === null || TimeData === null) {
       alert("Some data is missing like city, dates, time, please go back and select again.")
-    }
-    const bookingDetails = {
-      clerkId: user?.id,
-      email: user?.primaryEmailAddress?.emailAddress,
-      movieName: filterData?.originalTitle,
-      movieId: filterData?.id,    
-      City: selectedCity,
-      Address: cityData.movieHall.address,
-      ShowDate: DateData,
-      ShowTime: TimeData,
-      totalSeat: totalSeat,
-      totalPaid: totalPrice,
-      seatNos: selectedSeats
-    }
-    
+    } else {
+      //call payment api if payment get sucess then i push data into databse
 
-    try {
-      const putData = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/booking`, bookingDetails)
 
-      if (putData.status === 201) {
-        alert("Booking successful! Check your email for details.")
-        console.log("Booking successful");
-        console.log(putData.data);
+
+      if (!user?.id || !user?.primaryEmailAddress?.emailAddress) {
+        alert("Please make sure you are logged in with a valid email address.");
+        return;
       }
-    } catch (error) {
-      console.error("error in booking:", error);
-      alert("error in booking, please try again")
-    }
 
+      // save the booking details to the databse
+
+
+
+
+      // payment gateway integration
+      const OrderDetails = {
+        order_amount: totalPrice,
+        customer_id: user.id,
+        customer_email: user.primaryEmailAddress.emailAddress,
+      }
+      try {
+        console.log("Initiating payment with details:", OrderDetails);
+        const SessionResponse = await sessionId(OrderDetails);
+        console.log("Payment Session Response:", SessionResponse.payment_session_id, SessionResponse.order_id);
+
+        if (!SessionResponse.payment_session_id || !SessionResponse.order_id) {
+          throw new Error("No payment session ID received");
+        }
+
+        const bookingDetails = {
+          clerkId: user?.id,
+          email: user?.primaryEmailAddress?.emailAddress,
+          movieName: filterData?.originalTitle,
+          movieId: filterData?.id,
+          City: selectedCity,
+          Address: cityData.movieHall.address,
+          ShowDate: DateData,
+          ShowTime: TimeData,
+          totalSeat: totalSeat,
+          totalPaid: totalPrice,
+          seatNos: selectedSeats,
+          oderId: SessionResponse.order_id,
+        }
+
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/booking`, bookingDetails)
+
+
+
+        const paymentSessionId = SessionResponse.payment_session_id;
+        try {
+          let cashFree: any = await load({
+            mode: "sandbox" // Change to "production" when going live
+          });
+          let checkoutOptions = {
+            paymentSessionId: paymentSessionId,
+            redirectTarget: "_self",
+          };
+          await cashFree.checkout(checkoutOptions);
+        } catch (error) {
+          console.error("CashFree SDK error:", error);
+          alert("Failed to initialize payment. Please try again.");
+        }
+      } catch (error: any) {
+        console.error("Payment initiation error:", error);
+        alert(error.response?.data?.message || "Failed to start payment. Please try again.");
+      }
+
+    }
   }
 
   useEffect(() => {
