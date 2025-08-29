@@ -15,6 +15,7 @@ import { MovieBooked } from './routerFunction/MovieBooked.js'
 import {Cashfree} from 'cashfree-pg'
 import { payment } from './routerFunction/Payment.js'
 import { verify } from './routerFunction/Verify.js'
+import { SeatCheck } from './routerFunction/SeatCheck.js'
 
 
 
@@ -38,6 +39,8 @@ app.post('/api/booking', MovieBooked)
 
 app.post('/api/payment', payment)
 app.post('/api/webhook/verify', verify )
+
+app.post('/api/seatCheck', SeatCheck)
 
 serve({
   fetch: app.fetch,

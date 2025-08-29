@@ -113,6 +113,18 @@ export default function PaymentStatus() {
 
     const istString = dateObj.toLocaleString('en-GB', options);
 
+    const isoDate = paymentData?.ShowDate; // e.g., "2025-08-19T06:39:44.677Z"
+    const dateObj2 = new Date(isoDate);
+    const options2: Intl.DateTimeFormatOptions = {
+        day: 'numeric',
+        month: 'short', // "Aug"
+        year: 'numeric'
+    };
+
+    const formattedDate = dateObj2.toLocaleDateString('en-GB', options2);
+
+
+
     return (
         <div
             className="flex flex-col items-center justify-center min-h-screen bg-center bg-cover"
@@ -130,12 +142,7 @@ export default function PaymentStatus() {
                                 {/* Airline info */}
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center my-1">
-                                        <span className="mr-3 rounded-full bg-white w-8 h-8"> {/**Logo */}
-                                            <img
-                                                src="https://image.winudf.com/v2/image1/Y29tLmJldHMuYWlyaW5kaWEudWlfaWNvbl8xNTU0NTM4MzcxXzA0Mw/icon.png?w=&fakeurl=1"
-                                                className="h-8 p-1"
-                                            />
-                                        </span>
+                                        
                                         <h2 className="font-medium">Showtym</h2>
                                     </div>
                                     <div className="text-blue-800">E-Ticket</div>
@@ -157,7 +164,7 @@ export default function PaymentStatus() {
                                 <div className="flex items-center mb-5 p-5 text-sm">
                                     <div className="flex flex-col">
                                         <span className="text-sm">Show Date</span>
-                                        <div className="font-semibold">3/12/12</div>
+                                        <div className="font-semibold">{formattedDate}</div>
                                     </div>
                                     <div className="flex flex-col ml-auto">
                                         <span className="text-sm">Show Time</span>
@@ -166,8 +173,8 @@ export default function PaymentStatus() {
                                 </div>
 
                                 {/* Timing */}
-                                <div className="flex flex-col  items-cente mb-4 px-5">
-                                    <div className="font-semibold">Venue : </div>
+                                <div className="flex flex-col  items-cente mb-2 px-5">
+                                    <div className="font-semibold">Venue</div>
                                     <div className="flex items-start flex-col">
                                         <div className="font-semibold">Place : {paymentData.City}</div>
                                         <div>{paymentData.Address}</div>
@@ -181,10 +188,7 @@ export default function PaymentStatus() {
 
                                 {/* Passenger info */}
                                 <div className="flex items-center px-5 pt-3 text-sm">
-                                    <div className="flex flex-col">
-                                        <span>Person Count</span>
-                                        <div className="font-semibold">{paymentData.totalSeat}</div>
-                                    </div>
+                                
                                     <div className="flex flex-col mx-auto text-center">
                                         <span>Seats</span>
                                         <div className="font-semibold flex flex-wrap justify-center gap-1 mt-1">
@@ -197,7 +201,7 @@ export default function PaymentStatus() {
                                     </div>
 
                                 </div>
-                                <div className="flex gap-2 justify-center text-sm mt-5">
+                                <div className="flex gap-2 justify-center text-sm mt-1">
                                     <span>Paid: </span>
                                     <div className="font-semibold">{paymentData.totalPaid}</div>
                                 </div>
@@ -207,6 +211,7 @@ export default function PaymentStatus() {
                                     <h6 className="font-bold text-center opacity-40">Transaction ID: {myOrderId}</h6>
                                     <h6 className="font-bold text-center opacity-40">User: {paymentData.email}</h6>
                                     <h6 className="font-bold text-center opacity-40">Date: {istString}</h6>
+                                    <h6 className="font-bold text-center opacity-40 hover:underline cursor-pointer" onClick={() => navigate('/')}>Go To Home</h6>
                                 </div>
                             </div>
                         </div>

@@ -3,7 +3,7 @@ import { MovieStore, useCityStore, useDate, useSeatStore } from "@/store/Store";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react"; // or @clerk/nextjs
 import axios from "axios";
 import { sessionId } from "@/functions/CashFreeSessionID";
@@ -23,13 +23,33 @@ export default function SeatBook() {
   const totalSeat = selectedSeats.length
   const totalPrice = cityData?.movieHall?.pricePerSeat * totalSeat
   const { user } = useUser();
+  const [bookedSeats, setBookedSeats] = useState<[]>([]);
+
+  const SeatCheck = {
+    movieID: id,
+    city: selectedCity,
+    showDate: DateData,
+    showTime: TimeData,
+  }
+
+  useEffect(() => {
+    const fetchBookedSeats = async () => {
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/seatCheck`, SeatCheck)
+        setBookedSeats(response.data.bookedSeats)
+        console.log("booked seats are :", response.data.bookedSeats)
+      } catch (error) {
+        console.error("error in fetching the seats", error)
+      }
+    }
+
+    fetchBookedSeats()
+  }, [id, selectedCity, DateData, TimeData])
 
 
 
 
 
-
-  console.log("Selected city:", selectedCity);
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
 
     e.preventDefault();
@@ -147,7 +167,7 @@ export default function SeatBook() {
 
       {/* Movie Seat Section (scrolls on small screens) */}
       <div className="seat w-full sm:w-3/4 lg:w-1/2">
-        <MovieSeat />
+        <MovieSeat BookedSeat={bookedSeats?.flatMap((b: any) => b.seatNos)} />
       </div>
 
       {/* Sticky Pay Now Button */}
