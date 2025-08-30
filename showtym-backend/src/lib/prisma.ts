@@ -1,21 +1,14 @@
-// src/lib/prisma.ts
-import { PrismaClient } from '@prisma/client/edge';
-import { neonConfig } from '@neondatabase/serverless';
+import { PrismaClient } from '../generated/prisma/edge.js';
+import { withAccelerate } from '@prisma/extension-accelerate';
 
-// Enable fetch-based queries for Cloudflare Workers
-neonConfig.poolQueryViaFetch = true;
+declare global {
+  var prisma: PrismaClient | undefined;
+}
 
-// Singleton Prisma instance
-let prisma: PrismaClient;
-
-// Default export Prisma
-export default (env: any) => {
-  if (!prisma) {
-    prisma = new PrismaClient({
-      datasources: {
-        db: { url: env.DATABASE_URL as string },
-      },
-    });
+export function getPrisma() {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient();
+    global.prisma.$extends(withAccelerate());
   }
-  return prisma;
-};
+  return global.prisma;
+}

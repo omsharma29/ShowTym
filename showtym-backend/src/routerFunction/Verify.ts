@@ -1,5 +1,5 @@
 import { Cashfree, CFEnvironment } from "cashfree-pg";
-import prisma from "../lib/prisma.js";
+import {getPrisma} from "../lib/prisma.js";
 
 // Initialize Cashfree instance
 const cashfree = new Cashfree(
@@ -12,7 +12,8 @@ const cashfree = new Cashfree(
 
 
 export const verify = async (c: any) => {
-         const db = prisma(c.env);
+        const prisma = getPrisma();
+    
     
     try {
         const body = await c.req.json();
@@ -37,7 +38,7 @@ export const verify = async (c: any) => {
         } = response.data;
 
         if (order_status === 'PAID') {
-            await db.booking.updateManyAndReturn({
+            await prisma.booking.updateManyAndReturn({
                 where: { orderId: orderId },
                 data: { PaymentDone: true }
             })
@@ -46,7 +47,7 @@ export const verify = async (c: any) => {
         }
 
 
-        const booking = await db.booking.findFirst({
+        const booking = await prisma.booking.findFirst({
             where: { orderId: orderId }, // 👈 ensure your Booking model has "orderId" field
             select: {
                 orderId: true,

@@ -1,24 +1,18 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider        = "prisma-client-js"
-  output          = "../src/generated/prisma"
-  previewFeatures = ["driverAdapters"] // 👈 required for Neon in Workers
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
-generator clientEdge {
-  provider   = "prisma-client-js"
-  engineType = "edge"
+generator edge {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma/edge"
+  previewFeatures = ["driverAdapters"]
 }
-
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model Booking {
@@ -26,7 +20,7 @@ model Booking {
   clerkId      String
   email        String
   movieName    String
-  movieId      String   // ✅ new field
+  movieId      String
   City         String
   Address      String
   ShowDate     DateTime
@@ -34,12 +28,11 @@ model Booking {
   totalSeat    Int
   totalPaid    Float
   bookingDate  DateTime @default(now())
-  seatNos      String[]   // ✅ array of seat numbers (Postgres only)
-  orderId       String
+  seatNos      String[]
+  orderId      String
   PaymentDone  Boolean
 
-
   @@index([clerkId])
-   @@index([orderId])
+  @@index([orderId])
   @@index([email])
 }

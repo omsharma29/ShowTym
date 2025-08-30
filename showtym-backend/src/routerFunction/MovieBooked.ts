@@ -1,11 +1,13 @@
 
-import prisma from "../lib/prisma.js"; // your prisma client
+import { getPrisma } from "../lib/prisma.js";
 
 export const MovieBooked = async (c:any) => {
-     const db = prisma(c.env);
+    const prisma = getPrisma();
+    console.log("DB URL:", c.env.DATABASE_URL); // check if it's defined
+
     try {
         const body = await c.req.json()
-        const newBooking = await db.booking.create({
+        const newBooking = await prisma.booking.create({
             data :{
                 clerkId : body.clerkId,
                 email : body.email,
