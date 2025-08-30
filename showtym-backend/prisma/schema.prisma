@@ -10,6 +10,11 @@ generator client {
   previewFeatures = ["driverAdapters"] // 👈 required for Neon in Workers
 }
 
+generator clientEdge {
+  provider   = "prisma-client-js"
+  engineType = "edge"
+}
+
 
 datasource db {
   provider = "postgresql"

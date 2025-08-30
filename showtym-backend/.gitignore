@@ -2,3 +2,7 @@ node_modules
 .env
 env
 /src/generated/prisma
+.wrangler.toml
+wrangler.toml
+.dist
+dist

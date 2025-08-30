@@ -38,9 +38,6 @@ importers:
       hono:
         specifier: ^4.9.2
         version: 4.9.2
-      install:
-        specifier: ^0.13.0
-        version: 0.13.0
       tsx:
         specifier: ^4.20.4
         version: 4.20.4
@@ -48,6 +45,9 @@ importers:
         specifier: ^8.18.3
         version: 8.18.3
     devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20250830.0
+        version: 4.20250830.0
       '@types/node':
         specifier: ^24.3.0
         version: 24.3.0
@@ -57,6 +57,9 @@ importers:
       i:
         specifier: ^0.3.7
         version: 0.3.7
+      install:
+        specifier: ^0.13.0
+        version: 0.13.0
       prisma:
         specifier: ^6.14.0
         version: 6.14.0(typescript@5.9.2)
@@ -65,6 +68,9 @@ importers:
         version: 5.9.2
 
 packages:
+
+  '@cloudflare/workers-types@4.20250830.0':
+    resolution: {integrity: sha512-uAGZFqEBFnCiwIokxMnrrtjIkT8qyGT1LACSScEUyW7nKmtD0Viykp9QZWrIlssyEp/MDB6XsdALF8y6upxpcg==}
 
   '@esbuild/aix-ppc64@0.25.9':
     resolution: {integrity: sha512-OaGtL73Jck6pBKjNIe24BnFE6agGl+6KxDtTfHhy1HmhthfKouEcOhqpSL64K4/0WCtbKFLOdzD/44cJ4k9opA==}
@@ -627,6 +633,8 @@ packages:
     engines: {node: '>=0.4'}
 
 snapshots:
+
+  '@cloudflare/workers-types@4.20250830.0': {}
 
   '@esbuild/aix-ppc64@0.25.9':
     optional: true
