@@ -2,9 +2,10 @@
 import prisma from "../lib/prisma.js"; // your prisma client
 
 export const MovieBooked = async (c:any) => {
+     const db = prisma(c.env);
     try {
         const body = await c.req.json()
-        const newBooking = await prisma.booking.create({
+        const newBooking = await db.booking.create({
             data :{
                 clerkId : body.clerkId,
                 email : body.email,

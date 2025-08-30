@@ -2,6 +2,8 @@ import prisma from "../lib/prisma.js";
 
 
 export const SeatCheck = async (c: any) => {
+         const db = prisma(c.env);
+    
     try {
         const body = await c.req.json();
         const { movieID, city, showDate, showTime } = body;
@@ -17,7 +19,7 @@ export const SeatCheck = async (c: any) => {
         const endOfDay = new Date(showDate);
         endOfDay.setUTCHours(23, 59, 59, 999);
 
-        const findBookedSeats = await prisma.booking.findMany({
+        const findBookedSeats = await db.booking.findMany({
             where: {
                 movieId: movieID,
                 City: city,

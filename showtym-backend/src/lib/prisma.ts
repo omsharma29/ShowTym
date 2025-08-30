@@ -1,24 +1,21 @@
-
-import { PrismaClient } from '../generated/prisma/index.js';
-import { PrismaNeon } from '@prisma/adapter-neon';
+// src/lib/prisma.ts
+import { PrismaClient } from '@prisma/client/edge';
 import { neonConfig } from '@neondatabase/serverless';
 
-import ws from 'ws';
-neonConfig.webSocketConstructor = ws;
+// Enable fetch-based queries for Cloudflare Workers
+neonConfig.poolQueryViaFetch = true;
 
-// To work in edge environments (Cloudflare Workers, Vercel Edge, etc.), enable querying over fetch
-// neonConfig.poolQueryViaFetch = true
+// Singleton Prisma instance
+let prisma: PrismaClient;
 
-// Type definitions
-// declare global {
-//   var prisma: PrismaClient | undefined
-// }
-
-const connectionString = process.env.DATABASE_URL as string;
-
-const adapter = new PrismaNeon({ connectionString });
-const prisma = new PrismaClient({ adapter });
-
-
-
-export default prisma;
+// Default export Prisma
+export default (env: any) => {
+  if (!prisma) {
+    prisma = new PrismaClient({
+      datasources: {
+        db: { url: env.DATABASE_URL as string },
+      },
+    });
+  }
+  return prisma;
+};

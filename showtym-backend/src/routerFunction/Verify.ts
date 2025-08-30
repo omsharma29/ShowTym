@@ -12,6 +12,8 @@ const cashfree = new Cashfree(
 
 
 export const verify = async (c: any) => {
+         const db = prisma(c.env);
+    
     try {
         const body = await c.req.json();
         const orderId = body.orderId; // just extract the string
@@ -35,7 +37,7 @@ export const verify = async (c: any) => {
         } = response.data;
 
         if (order_status === 'PAID') {
-            await prisma.booking.updateManyAndReturn({
+            await db.booking.updateManyAndReturn({
                 where: { orderId: orderId },
                 data: { PaymentDone: true }
             })
@@ -44,7 +46,7 @@ export const verify = async (c: any) => {
         }
 
 
-        const booking = await prisma.booking.findFirst({
+        const booking = await db.booking.findFirst({
             where: { orderId: orderId }, // 👈 ensure your Booking model has "orderId" field
             select: {
                 orderId: true,
