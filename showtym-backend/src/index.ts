@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import 'dotenv/config' // remove it while deploying in cloudflare as because not supoorted 
+ // remove it while deploying in cloudflare as because not supoorted 
 import { serve } from '@hono/node-server'
 import { TopUSAmovies } from './routerFunction/TopUSmovies.js'
 import { TopIndianMovies } from './routerFunction/TopIndianMovies.js'
@@ -42,9 +42,4 @@ app.post('/api/webhook/verify', verify )
 
 app.post('/api/seatCheck', SeatCheck)
 
-serve({
-  fetch: app.fetch,
-  port: 3000,
-})
-
-console.log('✅ Server is running on http://localhost:3000')
+export default app

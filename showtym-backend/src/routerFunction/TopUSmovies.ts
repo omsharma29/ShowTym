@@ -9,10 +9,10 @@ export const TopUSAmovies = async(c: any)=>{
         console.log("redis is return")
         return c.json(cachedData, 200);
       }
-    const fetch = await axios.get(process.env.TOP_US_MOVIES as string, {
+    const fetch = await axios.get(c.env.TOP_US_MOVIES as string, {
       headers: {
-        'x-rapidapi-key': process.env.RAPIDAPI_KEY as string,
-        'x-rapidapi-host': process.env.RAPIDAPI_HOST as string,
+        'x-rapidapi-key': c.env.RAPIDAPI_KEY as string,
+        'x-rapidapi-host': c.env.RAPIDAPI_HOST as string,
       }
     })
      await redis.set("USAMovies", fetch.data, {

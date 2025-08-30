@@ -12,10 +12,10 @@ export const CastInfo = async (c: any) => {
             return c.json(cachedData, 200);
         }
 
-        const fetch = await axios.get(`${process.env.CASTINFO as string}/${id}/cast`, {
+        const fetch = await axios.get(`${c.env.CASTINFO as string}/${id}/cast`, {
             headers: {
-                'x-rapidapi-key': process.env.RAPIDAPI_KEY as string,
-                'x-rapidapi-host': process.env.RAPIDAPI_HOST as string,
+                'x-rapidapi-key': c.env.RAPIDAPI_KEY as string,
+                'x-rapidapi-host': c.env.RAPIDAPI_HOST as string,
             }
         })
         await redis.set(id, fetch.data, {

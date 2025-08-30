@@ -11,10 +11,10 @@ export const TopIndianMovies = async(c: any)=>{
               return c.json(cachedData, 200);
             }
   
-    const fetch = await axios.get(process.env.TOP_INDIAN_MOVIES as string, {
+    const fetch = await axios.get(c.env.TOP_INDIAN_MOVIES as string, {
       headers: {
-        'x-rapidapi-key': process.env.RAPIDAPI_KEY as string,
-        'x-rapidapi-host': process.env.RAPIDAPI_HOST as string,
+        'x-rapidapi-key': c.env.RAPIDAPI_KEY as string,
+        'x-rapidapi-host': c.env.RAPIDAPI_HOST as string,
       }
     })
 

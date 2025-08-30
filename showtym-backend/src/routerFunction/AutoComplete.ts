@@ -6,11 +6,11 @@ export const AutoComplete = async (c: any) => {
         if (!query) {
             return c.json({ error: 'Query parameter is required' }, 400)
         }
-        const fetch = await axios.get(process.env.AUTO_COMPLETE as string, {
+        const fetch = await axios.get(c.env.AUTO_COMPLETE as string, {
             params: { query },
             headers: {
-                'x-rapidapi-key': process.env.RAPIDAPI_KEY as string,
-                'x-rapidapi-host': process.env.RAPIDAPI_HOST as string,
+                'x-rapidapi-key': c.env.RAPIDAPI_KEY as string,
+                'x-rapidapi-host': c.env.RAPIDAPI_HOST as string,
             }
         })
         return c.json(fetch.data, 200)
