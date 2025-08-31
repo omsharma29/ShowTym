@@ -1,5 +1,5 @@
 import { MovieStore, useUsaMovie } from "@/store/Store"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import axios from 'axios'
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useHorizontalScroll } from "@/functions/Scroll"
@@ -9,10 +9,13 @@ export default function USAMovies() {
     const setUsaMovie = useUsaMovie((state) => state.setUsaMovie)
     const setAllMovies = MovieStore((state) => state.addMovies)
     const { scroll, scrollRef } = useHorizontalScroll()
+    const [loading, setLoading] = useState(false);
+
 
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
                 if (data.length === 0) {
                     const fetch = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/usmovies`)
@@ -23,6 +26,8 @@ export default function USAMovies() {
 
             } catch (error) {
                 console.log(error)
+            } finally {
+                setLoading(false); // ✅ ensures loading ends only after request finishes
             }
         }
         fetchData();
@@ -38,7 +43,12 @@ export default function USAMovies() {
             </div>
             <div ref={scrollRef} // ✅ attach ref here
                 onContextMenu={(e) => e.preventDefault()} className="flex gap-4 w-full mx-auto overflow-x-auto no-scrollbar pb-4">
-                {data.map((movie, id) => (
+                {loading ? Array.from({ length: 6 }).map((_, id) => (
+                    <div
+                        key={id}
+                        className="lg:w-[300px] md:w-[200px] w-[100px] h-[450px] rounded-2xl bg-gray-300 animate-pulse"
+                    ></div>
+                )) : data.map((movie, id) => (
                     movie.primaryImage &&
                     <img src={movie.primaryImage} key={id} draggable={false} className="lg:w-[300px] hover:scale-103 md:w-[200px] w-[100px] rounded-2xl" onClick={() => {
                         window.location.href = `/${movie.id}/details`;
