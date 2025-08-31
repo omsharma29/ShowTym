@@ -9,11 +9,13 @@ export default function UpcomingMovie() {
   const setUpcomingMovie = useUpcomingMovie((state) => state.setUpcomingMovie);
   const setAllMovies = MovieStore((state) => state.addMovies);
   const { scroll, scrollRef } = useHorizontalScroll();
-  const [loading, setLoading] = useState(false);
+
+  // ✅ Track both fetching and image loading
+  const [fetching, setFetching] = useState(true);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
         if (data.length === 0) {
           const res = await axios.get(
@@ -25,12 +27,14 @@ export default function UpcomingMovie() {
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false); // ✅ ensures loading ends only after request finishes
+        setFetching(false); // API is done
       }
     };
 
     fetchData();
   }, [data, setUpcomingMovie, setAllMovies]);
+
+  const totalImages = data.length;
 
   return (
     <div className="max-w-full mx-auto w-[90%]">
@@ -56,30 +60,32 @@ export default function UpcomingMovie() {
         onContextMenu={(e) => e.preventDefault()}
         className="flex gap-4 w-full mx-auto overflow-x-auto no-scrollbar pb-4 no-select"
       >
-        {loading
-          ? // 🔥 Show skeletons while loading
-          Array.from({ length: 6 }).map((_, id) => (
-            <div
-              key={id}
-              className="lg:w-[300px] md:w-[200px] w-[100px] h-[450px] rounded-2xl bg-gray-300 animate-pulse"
-            ></div>
-          ))
-          : // ✅ Show images once loaded
-          data.map(
-            (movie, id) =>
-              movie.primaryImage && (
-                <img
-                  src={movie.primaryImage}
-                  key={id}
-                  draggable={false}
-                  loading="lazy"
-                  className="lg:w-[300px] md:w-[200px] w-[100px] rounded-2xl"
-                  onClick={() =>
-                    (window.location.href = `/${movie.id}/details`)
-                  }
-                />
-              )
-          )}
+        {/* Show skeletons until API + images loaded */}
+        {fetching || imagesLoaded > totalImages
+          ? Array.from({ length: 6 }).map((_, id) => (
+              <div
+                key={id}
+                className="lg:w-[300px] md:w-[200px] w-[100px] h-[450px] rounded-2xl bg-gray-300 animate-pulse"
+              ></div>
+            ))
+          : data.map(
+              (movie, id) =>
+                movie.primaryImage && (
+                  <img
+                    src={movie.primaryImage}
+                    key={id}
+                    draggable={false}
+                    loading="lazy"
+                    onLoad={() =>
+                      setImagesLoaded((prev) => prev + 1)
+                    } // ✅ count loaded images
+                    className="lg:w-[300px] md:w-[200px] w-[100px] h-[450px] rounded-2xl object-cover cursor-pointer transition-transform hover:scale-105"
+                    onClick={() =>
+                      (window.location.href = `/${movie.id}/details`)
+                    }
+                  />
+                )
+            )}
       </div>
     </div>
   );
