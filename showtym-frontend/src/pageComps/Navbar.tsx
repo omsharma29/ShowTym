@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 function Navbar() {
   const { search, setSearch, results, setResults, loading, setLoading } = useSearch()
   const navigate = useNavigate()
-  
+
   useEffect(() => {
     if (!search) return setResults([]);
     const debounce = setTimeout(async () => {
@@ -30,7 +30,8 @@ function Navbar() {
   }, [search])
 
   return (
-    <div className="grid md:grid-cols-3  grid-cols-2 gap-2 rounded-2xl justify-center md:sticky top-0 z-50 bg-white border-2 shadow-2xl max-w-full w-[90%] mx-auto p-2">
+    <>
+    <div className="grid md:grid-cols-3  grid-cols-2 gap-2 rounded-2xl justify-center sticky top-0 z-50 bg-white border-2 shadow-2xl max-w-full w-[90%] mx-auto p-2">
 
       {/* Logo */}
       <div className=" w-15 md:w-25 h-auto justify-self-center">
@@ -38,7 +39,7 @@ function Navbar() {
       </div>
 
       {/* Search Box */}
-      <div className="w-full mt-2 md:mt-0 p-3 col-span-2 md:col-span-1 md:w-[100%] flex items-center order-3 md:order-2 self-center">
+      <div className="w-full mt-2 md:mt-0 p-3 col-span-2 md:col-span-1 md:w-[100%] z-50 flex items-center order-3 md:order-2 self-center">
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -52,8 +53,9 @@ function Navbar() {
           </div>
         )}
 
+
         {results.length > 0 && !loading && (
-          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2/3 md:w-1/3 max-h-64  bg-white overflow-y-auto border mt-1 p-2 shadow-lg z-50 flex flex-col gap-2">
+          <div className="absolute md:top-full top-30 left-1/2  transform -translate-x-1/2 w-2/3 md:w-1/3 max-h-64 rounded-xl backdrop:blur-2xl  backdrop-blur-sm  bg-white overflow-y-auto border mt-1 p-2 shadow-2xl shadow-black z-90 flex flex-col gap-2">
             {results.map((res) => (
               <button onClick={() => navigate(`/${res.id}/details`)} key={res.id} className="flex items-center gap-2">
                 <img src={res.primaryImage} alt={res.primaryImage} className="w-12 h-16 object-cover rounded" />
@@ -70,6 +72,10 @@ function Navbar() {
       </div>
 
     </div>
+  {(results.length > 0 || loading) && (
+    <div className="fixed inset-0 backdrop-blur-sm bg-black/20 z-40"></div>
+  )}
+    </>
   );
 }
 
