@@ -57,7 +57,7 @@ export default function UpcomingMovie() {
               draggable={false}
               onLoad={() => handleImageLoad(movie.id)}
               onClick={() => (window.location.href = `/${movie.id}/details`)}
-              className={`lg:w-[300px] md:w-[200px] w-[100px] h-[450px] rounded-2xl object-cover cursor-pointer
+              className={`lg:w-[300px] md:w-[200px] w-[100px]  rounded-2xl object-cover cursor-pointer
                 transition-all duration-500
                 ${loadedImages[movie.id] ? "opacity-100 blur-0" : "opacity-0 blur-md bg-gray-300"}
               `}

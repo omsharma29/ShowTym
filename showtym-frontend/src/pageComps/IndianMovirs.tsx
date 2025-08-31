@@ -9,13 +9,12 @@ export default function IndianMovirs() {
     const setIndianMovie = useIndianMovie((state) => state.setIndianMovie)
     const setAllMovies = MovieStore((state) => state.addMovies)
     const { scroll, scrollRef } = useHorizontalScroll()
-    const [loading, setLoading] = useState(false);
 
+    const [loadedImages, setLoadedImage] = useState<{ [id: string]: boolean }>({})
 
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
             try {
                 if (data.length === 0) {
                     const fetch = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/indianmovies`)
@@ -26,12 +25,14 @@ export default function IndianMovirs() {
 
             } catch (error) {
                 console.log(error)
-            } finally {
-                setLoading(false); // ✅ ensures loading ends only after request finishes
             }
         }
         fetchData();
     }, [data, setIndianMovie])
+
+    const handleLoadImage = (id: string) => {
+        setLoadedImage((prev) => ({ ...prev, [id]: true }))
+    }
     return (
         <div className="max-w-full mx-auto w-[90%]">
             <div className="flex justify-between items-center mb-4">
@@ -45,19 +46,17 @@ export default function IndianMovirs() {
                 ref={scrollRef} // ✅ attach ref here
                 onContextMenu={(e) => e.preventDefault()}
                 className="flex gap-4 w-full mx-auto overflow-x-auto no-scrollbar pb-4">
-
-                {loading ? Array.from({ length: 6 }).map((_, id) => (
-                    <div
-                        key={id}
-                        className="lg:w-[300px] md:w-[200px] w-[100px] h-[450px] rounded-2xl bg-gray-300 animate-pulse"
-                    ></div>
-                )) : data.map((movie, id) => (
+                {data.map((movie, id) => (
                     movie.primaryImage &&
-                    <img src={movie.primaryImage} key={id} draggable={false} className="lg:w-[300px] md:w-[200px] w-[100px] rounded-2xl" onClick={() => {
-                        window.location.href = `/${movie.id}/details`;
-                    }} />
+                    <img src={movie.primaryImage}
+                        onLoad={() => handleLoadImage(movie.id)}
+                        key={id} draggable={false} className={`lg:w-[300px] md:w-[200px] w-[100px]  rounded-2xl object-cover cursor-pointer
+                transition-all duration-500
+                ${loadedImages[movie.id] ? "opacity-100 blur-0" : "opacity-0 blur-md bg-gray-300"}
+              `} onClick={() => {
+                            window.location.href = `/${movie.id}/details`;
+                        }} />
                 ))}
-
             </div>
         </div>
 
