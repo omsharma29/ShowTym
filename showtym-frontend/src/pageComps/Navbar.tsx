@@ -53,7 +53,7 @@ function Navbar() {
         )}
 
         {results.length > 0 && !loading && (
-          <div className="absolute top-full max-h-64 left-[32%] w-1/3 bg-white overflow-y-auto border mt-1 p-2 shadow-lg z-50 flex flex-col gap-2">
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2/3 md:w-1/3 max-h-64  bg-white overflow-y-auto border mt-1 p-2 shadow-lg z-50 flex flex-col gap-2">
             {results.map((res) => (
               <button onClick={() => navigate(`/${res.id}/details`)} key={res.id} className="flex items-center gap-2">
                 <img src={res.primaryImage} alt={res.primaryImage} className="w-12 h-16 object-cover rounded" />
